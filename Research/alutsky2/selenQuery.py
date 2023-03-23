@@ -1,7 +1,20 @@
 import selenium as sm
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import pandas as pd
+
+
+#get list of zip codes from US.txt
+f = open("US.txt", "r")
+lines = f.readlines()
+f.close()
+zips = []
+for i in lines:
+    zips.append(i[3:8])
+print(zips)
+
+
 
 driver = webdriver.Firefox(executable_path="geckodriver")
 driver.get("https://www.yellowpages.com/")
@@ -43,8 +56,7 @@ def getURL(zipCode, tag):
     except:
         return dfZipCode
 
-
-for i in [str(num).zfill(5) for num in range(10001,10031)]:
+for i in zips:
     zipToAdd = getURL(i, "restaurant")
     df = pd.concat([zipToAdd, df], ignore_index=True)
 driver.quit()
