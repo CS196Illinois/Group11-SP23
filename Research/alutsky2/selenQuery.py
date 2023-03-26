@@ -12,7 +12,6 @@ f.close()
 zips = []
 for i in lines:
     zips.append(i[3:8])
-print(zips)
 
 
 
@@ -20,7 +19,10 @@ driver = webdriver.Firefox(executable_path="geckodriver")
 driver.get("https://www.yellowpages.com/")
 
 #set firefox options 
-df = pd.DataFrame();
+#df = pd.DataFrame()
+df = pd.read_csv("Illinois.csv");
+df = df.iloc[:, :-1]
+print(df)
 zipCodeList = list(range(0, 99999))
 
 #only gets first page
@@ -51,14 +53,23 @@ def getURL(zipCode, tag):
             dfElement['Category'] = [categoryElement]
             dfElement['priceElement'] = [priceElement]
             dfElement['ZipCode'] = [zipCode]
+            dfElement['QueryCategory'] = [tag]
             dfZipCode = pd.concat([dfElement, dfZipCode], ignore_index=True)
         return dfZipCode
     except:
+        print("not reading")
         return dfZipCode
 
 for i in zips:
-    zipToAdd = getURL(i, "restaurant")
-    df = pd.concat([zipToAdd, df], ignore_index=True)
+    if int(i) > 60000 and int(i) < 63000:
+        if int(i) not in list(df['ZipCode']): 
+            zipToAdd = getURL(i, "restaurant")
+            df = pd.concat([zipToAdd, df], ignore_index=True)
+            zipToAdd = getURL(i, "Auto Services")
+            df = pd.concat([zipToAdd, df], ignore_index=True)
+            zipToAdd = getURL(i, "Beauty")
+            df = pd.concat([zipToAdd, df], ignore_index=True)
 driver.quit()
 
+df.to_csv("illinois.csv")
 print(df)
