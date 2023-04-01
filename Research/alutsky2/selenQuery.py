@@ -1,4 +1,3 @@
-import selenium as sm
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -19,9 +18,9 @@ driver = webdriver.Firefox(executable_path="geckodriver")
 driver.get("https://www.yellowpages.com/")
 
 #set firefox options 
-#df = pd.DataFrame()
-df = pd.read_csv("Illinois.csv");
-df = df.iloc[:, :-1]
+df = pd.DataFrame()
+#df = pd.read_csv("Illinois.csv");
+#df = df.iloc[:, :-1]
 print(df)
 zipCodeList = list(range(0, 99999))
 
@@ -62,14 +61,12 @@ def getURL(zipCode, tag):
 
 for i in zips:
     if int(i) > 60000 and int(i) < 63000:
-        if int(i) not in list(df['ZipCode']): 
+        #if int(i) not in list(df['ZipCode']): 
+            print(i)
             zipToAdd = getURL(i, "restaurant")
             df = pd.concat([zipToAdd, df], ignore_index=True)
-            zipToAdd = getURL(i, "Auto Services")
-            df = pd.concat([zipToAdd, df], ignore_index=True)
-            zipToAdd = getURL(i, "Beauty")
-            df = pd.concat([zipToAdd, df], ignore_index=True)
+
 driver.quit()
 
-df.to_csv("illinois.csv")
+df.to_csv("IllinoisNew.csv")
 print(df)
