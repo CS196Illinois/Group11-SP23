@@ -2,6 +2,23 @@ body {
     background-image: linear-gradient(30deg , #000099, #0000ff);
 }
 
+
+@font-face {
+    font-family:Ubuntu;
+    src: url(../font/Ubuntu/Ubuntu-regular.ttf);
+}
+.TextBody {	
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform:  translate(-50%,50%);
+    color: white;
+    height: 40px;
+    font-family:Ubuntu;
+    font-size: 40px;
+}
+
+
 .searchBox {
     position: absolute;
     top: 50%;
@@ -11,7 +28,7 @@ body {
     height: 40px;
     border-radius: 40px;
     padding: 10px;
-
+    font-family:Ubuntu;
 }
 
 form:hover > .searchInput {
@@ -20,8 +37,8 @@ form:hover > .searchInput {
 }
 
 form:hover > .searchButton {
-  background: white;
-  color : #2f3640;
+    background: white;
+    color : #2f3640;
 }
 
 .searchButton {
