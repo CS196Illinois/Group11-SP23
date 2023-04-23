@@ -28,4 +28,3 @@ for index, row in data.iterrows():
     folium.Marker([lat, lon], popup=popup_content).add_to(m)  # Use the popup_content for the popup
 
 # Display the map
-m

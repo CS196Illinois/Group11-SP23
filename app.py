@@ -10,11 +10,13 @@ app = Flask(__name__)
 def welcome():
     return render_template("index.html")
 
-@app.route('/results', methods=['GET', 'POST'])
+@app.route('/results', methods=['POST'])
 def getZipInfo():
-    zip = request.form.get('search')
-    print("Testing getZipInfo")
-    return render_template("results.html")
+    data = request.form
+    print(data)
+    zipCode = data['searchInput']
+    print(zipCode)
+    return render_template("results.html", zipCode=zipCode)
 
 if __name__ == '__main__':
     app.run()

@@ -1,0 +1,21 @@
+
+@font-face {
+    font-family:Ubuntu;
+    src: url(../font/Ubuntu/Ubuntu-regular.ttf);
+}
+body {
+    background-image: linear-gradient(30deg , #000099, #0000ff);
+}
+
+.TextBody {	
+    position: absolute;
+    top: 12%;
+    left: 50%;
+    transform:  translate(-50%,50%);
+    color: white;
+    height: 40px;
+    font-family:Ubuntu;
+    font-size: 40px;
+}
+
+
