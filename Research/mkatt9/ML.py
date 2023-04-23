@@ -60,9 +60,12 @@ knn = KNeighborsClassifier(n_neighbors=5)
 # Fit the classifier to the data
 knn.fit(X, y)
 
-# Define a function that takes a postal code as input and returns the best type of restaurant to open
 def find_best_restaurant_type(postal_code):
     assert isinstance(postal_code, int)
+    
+    if postal_code < 60001 or postal_code > 62999 or len(str(postal_code)) != 5:
+        print(f"Invalid postal code: {postal_code}. Please enter a valid Illinois zip code with 5 digits.")
+        return None
 
     # Create a DataFrame with the given postal code, a dummy photo_count, and the encoded 'type' column filled with zeros
     encoded_postal_code = pd.DataFrame({'postal_code': [postal_code], 'photos_count': [0]})
@@ -80,7 +83,15 @@ def find_best_restaurant_type(postal_code):
     # Return the type with the highest count
     best_type = type_counts.index[0]
     assert isinstance(best_type, str)
+    
+    print(f"Zip code {postal_code}: The best restaurant type to open is '{best_type}'.")
     return best_type
 
 # Example usage
-print(find_best_restaurant_type(61615))
+find_best_restaurant_type(3)
+find_best_restaurant_type(62999)
+
+# Example usage for multiple zip codes
+postal_codes = [61615, 60025, 61833, 60109]
+for code in postal_codes:
+    find_best_restaurant_type(code)
