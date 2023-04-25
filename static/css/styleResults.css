@@ -18,4 +18,18 @@ body {
     font-size: 40px;
 }
 
-
+.tableResults {
+    position: absolute;
+    transform: translate(-50%, 50%);
+    top: 30%;
+    left: 50%;
+    background-color:#2f3640; 
+    color: white;
+    font-family:Ubuntu;
+    font-size: 20px;
+    border-radius: 15px;
+}
+.tableResults p {
+    margin: 20px;
+    padding: 5px 100px;
+}

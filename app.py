@@ -1,3 +1,4 @@
+from Research.mkatt9.ML_withLatLon import find_best_restaurant_type
 from flask import Flask, render_template, request
 import pandas as pd
 import json
@@ -15,8 +16,8 @@ def getZipInfo():
     data = request.form
     print(data)
     zipCode = data['searchInput']
-    print(zipCode)
-    return render_template("results.html", zipCode=zipCode)
+    bestType = find_best_restaurant_type(int(zipCode))
+    return render_template("results.html", zipCode=zipCode, bestType = bestType[0])
 
 if __name__ == '__main__':
     app.run()
