@@ -1,9 +1,10 @@
+import numpy as np
 import pandas as pd
 from sklearn.neighbors import BallTree
 from sklearn.preprocessing import OneHotEncoder
 
 # Load the CSV file into a pandas DataFrame
-data = pd.read_csv('202304012238291fea.csv')
+data = pd.read_csv('202304012238291fea.csv', dtype={'postal_code': str})
 assert isinstance(data, pd.DataFrame)
 
 # Drop rows containing missing values in the relevant columns
@@ -47,8 +48,8 @@ def find_best_restaurant_type(postal_code):
 
     lat, lon = postal_code_data[['latitude', 'longitude']].mean()
 
-    # Find the 10 nearest neighbors to the given postal code using the BallTree
-    neighbors = tree.query([(lat, lon)], k=10, return_distance=False)[0]
+    # Find the k'th nearest neighbors to the given postal code using the BallTree
+    neighbors = tree.query([(lat, lon)], k=40, return_distance=False)[0]
 
     # Get the restaurant types, subtypes, and categories for those neighbors
     neighbor_info = data.iloc[neighbors][['type', 'subtypes', 'category']]
@@ -60,21 +61,31 @@ def find_best_restaurant_type(postal_code):
     best_combination = combination_counts.index[0]
 
     # Check if any subtype matches with the best combination
-    types_and_categories = [best_combination[0], best_combination[2]]
-    subtype_matches = [subtype for subtype in best_combination[1] if subtype in types_and_categories]
+    types_and_categories = [best_combination[0].lower(), best_combination[2].lower()]
+    subtype_matches = [subtype.lower() for subtype in best_combination[1].split(', ')]
+
+    # Combine all the matches and handle plural forms
+    all_matches = [match[:-1] if match.endswith('s') else match for match in types_and_categories + subtype_matches]
+
+    # Find unique matches
+    unique_matches = list(set(all_matches))
+
+    # Capitalize the first letter of each word
+    formatted_matches = [match.capitalize() for match in unique_matches]
 
     # Print the best combination
-    if subtype_matches:
-        print(f"Zip code {postal_code}: The best restaurant type to open is '{best_combination[0]}' with subtypes '{', '.join(subtype_matches)}' and category '{best_combination[2]}'.")
+    if len(formatted_matches) == 1:
+        print(f"Zip code {postal_code}: The best restaurant type to open is '{formatted_matches[0]}'.")
     else:
-        print(f"Zip code {postal_code}: The best restaurant type to open is '{best_combination[0]}' with category '{best_combination[2]}'.")
+        print(f"Zip code {postal_code}: The best restaurant types to open are '{', '.join(formatted_matches[:-1])} and {formatted_matches[-1]}'.")
     return best_combination
+
 
 # Example usage
 find_best_restaurant_type(3)
 find_best_restaurant_type(62999)
 
 # Example usage for multiple zip codes
-postal_codes = [61615, 60025, 61833, 60109]
+postal_codes = [61615, 61520, 61833, 60109]
 for code in postal_codes:
     find_best_restaurant_type(code)
